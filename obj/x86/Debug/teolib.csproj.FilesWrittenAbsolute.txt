@@ -1,0 +1,5 @@
+/home/jtnunley/texbge/teolib/obj/x86/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/home/jtnunley/texbge/teolib/bin/Debug/teolib.dll.mdb
+/home/jtnunley/texbge/teolib/bin/Debug/teolib.dll
+/home/jtnunley/texbge/teolib/obj/x86/Debug/teolib.dll
+/home/jtnunley/texbge/teolib/obj/x86/Debug/teolib.dll.mdb
