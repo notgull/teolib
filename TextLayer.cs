@@ -29,59 +29,50 @@ namespace teolib
 		OverwriteCharsOnly = 2,
 	}
 
-	public class TextLayer : System.ComponentModel.Component, ICloneable
+	public class TextLayer : TextMap, ICloneable
 	{
-		private char[][] mapping;
-		private int width;
-		private int height;
-
+		
 		private bool xyView;
 
 		public bool XYView { get { return xyView; } set { xyView = value; } }
 
-		public int Width { get { return width; } }
 
-		public int Height { get { return height; } }
 
 		public TextLayer (int width, int height, bool xyView)
 		{
-			mapping = new char[width][];
+			data = new char[width][];
 			for (int i = 0; i < height; i++)
-				mapping [i] = new char[height];
+				data [i] = new char[height];
 
 			for (int j = 0; j < width; j++) {
-				char[] column = mapping [j];
+				char[] column = data [j];
 				for (int k = 0; k < height; k++)
 					column [k] = ' ';
 			}
-
-			this.width = width;
-			this.height = height;
-			this.xyView = xyView;
 		}
 
 		public static TextLayer CompileLayer(TextLayer layer) { 
-			char[][] mapping = MergedLayer.Mapping;
-			char[][] flippedMapping;
+			char[][] data = MergedLayer.data;
+			char[][] flippeddata;
 			if (layer.XYView) {
-				flippedMapping = new char[mapping.Length][];
-				for (int j = 0; j < mapping.Length; j++)
-					flippedMapping [0] = new char[mapping [0].Length];
+				flippeddata = new char[data.Length][];
+				for (int j = 0; j < data.Length; j++)
+					flippeddata [0] = new char[data [0].Length];
 
-				for (int k = 0; k < mapping.Length; k++) {
-					for (int l = mapping [0].Length - 1; l >= 0; l--) {
+				for (int k = 0; k < data.Length; k++) {
+					for (int l = data [0].Length - 1; l >= 0; l--) {
 						int x = k;
-						int y = mapping [0].Length - 1;
+						int y = data [0].Length - 1;
 						y -= l;
-						flippedMapping [x] [y] = mapping [k] [l];
+						flippeddata [x] [y] = data [k] [l];
 					}
 				}
 			} else {
-				flippedMapping = mapping;
+				flippeddata = data;
 			}
 
 			TextLayer nLayer = new TextLayer (layer.width, layer.height, layer.xyView);
-			TextMap nMap = new TextMap (flippedMapping);
+			TextMap nMap = new TextMap (flippeddata);
 			nLayer.AppendMap (nMap);
 			return nLayer;
 		}
@@ -104,11 +95,11 @@ namespace teolib
 						if (!appendSpaces && subj.Data[k][l] == ' ')
 							continue;
 						if (applyMode == TextMapApplyMode.OverwriteAll)
-						    mapping[i][j] = subj.Data[k][l];
-						else if (applyMode == TextMapApplyMode.OverwriteSpacesOnly && mapping[i][j] == ' ')
-							mapping[i][j] = subj.Data[k][l];
-						else if (applyMode == TextMapApplyMode.OverwriteCharsOnly && mapping[i][j] != ' ')
-							mapping[i][j] = subj.Data[k][l];  
+						    data[i][j] = subj.Data[k][l];
+						else if (applyMode == TextMapApplyMode.OverwriteSpacesOnly && data[i][j] == ' ')
+							data[i][j] = subj.Data[k][l];
+						else if (applyMode == TextMapApplyMode.OverwriteCharsOnly && data[i][j] != ' ')
+							data[i][j] = subj.Data[k][l];  
 					}
 					catch (ArgumentOutOfRangeException) {
 						forcedClip = true;
@@ -119,8 +110,8 @@ namespace teolib
 			return forcedClip;
 		}
 
-		public char[][] Mapping {
-			get  { return mapping; }
+		public char[][] data {
+			get  { return data; }
 		}
 
 		public bool AppendMap(TextMap map, TextMapApplyMode applyMode, bool appendSpaces, Point point, Size size) {
@@ -152,7 +143,7 @@ namespace teolib
 		}
 
 		public TextMap ToMap() {
-			return new TextMap (mapping);
+			return new TextMap (data);
 		}
 
 		public TextLayer MergeLayer(TextLayer other, bool isOtherTop) {
@@ -174,11 +165,11 @@ namespace teolib
 		}
 
 		public char GetLetterAt(int x, int y) {
-			return mapping [x] [y];
+			return data [x] [y];
 		}
 
 		public void ChangeLetterAt(int x, int y, char value) {
-			mapping [x] [y] = value;
+			data [x] [y] = value;
 		}
 
 		object ICloneable.Clone() {

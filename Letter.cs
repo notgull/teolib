@@ -17,6 +17,8 @@
 */
 using System;
 
+// NOTE: This was used earlier in the code, but is now obselete. Delete it if you like.
+
 namespace teolib
 {
 	// can represent either a letter or a blank spaces
