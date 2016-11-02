@@ -18,27 +18,58 @@
 */
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace teolib
 {
-	public class TextLayerCollection : List<TextLayer>
-	{
+	public class TextLayerCollection : Container, IList<TextLayer>, IComponent	{
 		public TextLayerCollection ()
 		{
+			textLayer = new List<TextLayer> ();
 		}
 
-		public TextLayerCollection(IEnumerable<TextLayer> layer) : base(layer) {
+		private List<TextLayer> textLayer;
+
+		private ISite site;
+		public ISite Site {
+			get { return site; }
+			set { site = value; }
+		}
+
+		public ComponentCollection Components {
+			get {
+				List<Component> component = new List<Component> ();
+				foreach (TextLayer layer in this)
+					component.Add (layer);
+				return new ComponentCollection (component.ToArray ()); 
+			}
+		}
+
+		public TextLayerCollection(IEnumerable<TextLayer> layer) : base() {
+			textLayer = new List<TextLayer> (layer);
 		}
 
 		public TextLayer MergeLayers() {
 			TextLayer curr = null;
 			foreach (TextLayer tl in this) {
-				if (curr == null)
-					curr = tl;
-				else
-					curr = tl.MergeLayer (curr);
+				if (curr == null) {
+					curr = TextLayer.CompileLayer (tl);
+				} else {
+					TextLayer nLayer = TextLayer.CompileLayer (tl);
+					nLayer.MergeLayer (curr);
+					curr = nLayer;
+				}
 			}
 			return curr;
+		}
+
+		private void AddInternal(TextLayer tl) {
+			textLayer.Add (tl);
+		}
+
+		public override void Add (IComponent component)
+		{
+			base.Add (component);
 		}
 	}
 }

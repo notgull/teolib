@@ -29,13 +29,21 @@ namespace teolib
 		OverwriteCharsOnly = 2,
 	}
 
-	public class TextLayer : ICloneable
+	public class TextLayer : System.ComponentModel.Component, ICloneable
 	{
 		private char[][] mapping;
 		private int width;
 		private int height;
 
-		public TextLayer (int width, int height)
+		private bool xyView;
+
+		public bool XYView { get { return xyView; } set { xyView = value; } }
+
+		public int Width { get { return width; } }
+
+		public int Height { get { return height; } }
+
+		public TextLayer (int width, int height, bool xyView)
 		{
 			mapping = new char[width][];
 			for (int i = 0; i < height; i++)
@@ -49,10 +57,41 @@ namespace teolib
 
 			this.width = width;
 			this.height = height;
+			this.xyView = xyView;
 		}
 
-		public TextLayer (Size size) : this(size.Width, size.Height) {
+		public static TextLayer CompileLayer(TextLayer layer) { 
+			char[][] mapping = MergedLayer.Mapping;
+			char[][] flippedMapping;
+			if (layer.XYView) {
+				flippedMapping = new char[mapping.Length][];
+				for (int j = 0; j < mapping.Length; j++)
+					flippedMapping [0] = new char[mapping [0].Length];
+
+				for (int k = 0; k < mapping.Length; k++) {
+					for (int l = mapping [0].Length - 1; l >= 0; l--) {
+						int x = k;
+						int y = mapping [0].Length - 1;
+						y -= l;
+						flippedMapping [x] [y] = mapping [k] [l];
+					}
+				}
+			} else {
+				flippedMapping = mapping;
+			}
+
+			TextLayer nLayer = new TextLayer (layer.width, layer.height, layer.xyView);
+			TextMap nMap = new TextMap (flippedMapping);
+			nLayer.AppendMap (nMap);
+			return nLayer;
 		}
+
+		public TextLayer(int width, int height) : this (width, height, true) { 
+
+		}
+
+		/*public TextLayer (Size size) : this(size.Width, size.Height) {
+		}*/
 
 		public bool AppendMap(TextMap map, TextMapApplyMode applyMode, bool appendSpaces, int x, int y, int width, int height) {
 			TextMap subj = map.Clip (width, height);

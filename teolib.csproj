@@ -40,6 +40,7 @@
     <Compile Include="TextLayer.cs" />
     <Compile Include="TextLayerCollection.cs" />
     <Compile Include="OutputManager.cs" />
+    <Compile Include="Dialog.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

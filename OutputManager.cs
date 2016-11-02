@@ -22,18 +22,51 @@ using System.ComponentModel;
 
 namespace teolib
 {
-	public class OutputManager : Component, IDisposable
+	public sealed class OutputManager : Container, IDisposable
 	{
 		private TextLayerCollection collection;
 		private TextWriter output;
 		private int margin;
+		private int width = -1;
+		private int height = -1;
 
-		public OutputManager (TextWriter output, int margin)
+		private const int defaultHeight = 30;
+		private const int defaultWidth = 101;
+
+		public OutputManager (TextWriter output, int width, int height)
 		{
 			this.output = output;
 			collection = new TextLayerCollection ();
-			this.margin = margin;
+			this.margin = height;
+			this.width = width;
+			this.height = height;
+			this.Add (collection);
 			Refresh ();
+		}
+
+		public TextLayer MakeLayer(int width, int height, bool xyView) {
+			if (this.width != -1 && this.height != -1)
+				throw new ArgumentException ("Use the version with no parameters to add to already existing layers.", "width");
+
+			return MakeLayerInternal (width, height, xyView);
+		}
+
+		public TextLayer MakeLayer(bool xyView) {
+			return MakeLayerInternal (width, height, xyView);
+		}
+
+		public TextLayer MakeLayer() {
+			return MakeLayer (true);
+		}
+
+		private TextLayer MakeLayerInternal(int width, int height, bool xyView) {
+			TextLayer layer = new TextLayer (width, height, xyView);
+			this.width = width;
+			this.height = height;
+			this.margin = margin;
+			collection.Add (layer);
+			//this.Add (layer);
+			return layer;
 		}
 
 		public OutputManager (TextWriter output) : this(output, Console.BufferHeight) { }
@@ -62,22 +95,9 @@ namespace teolib
 			for (int i = 0; i < margin; i++)
 				Console.WriteLine ();
 
-			// we need a row-by-row view, not an xy view. let's compile that
-			char[][] mapping = MergedLayer.Mapping;
-			char[][] flippedMapping = new char[mapping.Length][];
-			for (int j = 0; j < mapping.Length; j++)
-				flippedMapping [0] = new char[mapping [0].Length];
-			
-			for (int k = 0; k < mapping.Length; k++) {
-				for (int l = mapping [0].Length - 1; l >= 0; l--) {
-					int x = k;
-					int y = mapping [0].Length - 1;
-					y -= l;
-					flippedMapping [x] [y] = mapping [k] [l];
-				}
-			}
 
-			foreach (char[] row in flippedMapping) {
+
+			foreach (char[] row in MergedLayer.Mapping) {
 				Console.WriteLine (new String (row));
 			}
 		}
