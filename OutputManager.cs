@@ -33,13 +33,13 @@ namespace teolib
 		private const int defaultHeight = 30;
 		private const int defaultWidth = 101;
 
-		public OutputManager (TextWriter output, int width, int height)
+		public OutputManager (TextWriter output, int margin)
 		{
 			this.output = output;
 			collection = new TextLayerCollection ();
-			this.margin = height;
-			this.width = width;
-			this.height = height;
+			this.margin = margin;
+			this.height = margin;
+			this.width = Console.BufferWidth;
 			this.Add (collection);
 			Refresh ();
 		}
@@ -97,7 +97,7 @@ namespace teolib
 
 
 
-			foreach (char[] row in MergedLayer.Mapping) {
+			foreach (char[] row in MergedLayer.Data) {
 				Console.WriteLine (new String (row));
 			}
 		}

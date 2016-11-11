@@ -23,7 +23,13 @@ using System.Drawing;
 
 namespace teolib
 {
+	/// <summary>
+	/// The mode of which to apply Text Maps to Text Layers
+	/// </summary>
 	public enum TextMapApplyMode {
+		/// <summary>
+		/// Overwrite all characters with new characters
+		/// </summary>
 		OverwriteAll = 0,
 		OverwriteSpacesOnly = 1,
 		OverwriteCharsOnly = 2,
@@ -38,21 +44,13 @@ namespace teolib
 
 
 
-		public TextLayer (int width, int height, bool xyView)
+		public TextLayer (int width, int height, bool xyView) : base(width, height)
 		{
-			data = new char[width][];
-			for (int i = 0; i < height; i++)
-				data [i] = new char[height];
-
-			for (int j = 0; j < width; j++) {
-				char[] column = data [j];
-				for (int k = 0; k < height; k++)
-					column [k] = ' ';
-			}
+			this.xyView = xyView;
 		}
 
 		public static TextLayer CompileLayer(TextLayer layer) { 
-			char[][] data = MergedLayer.data;
+			char[][] data = layer.data;
 			char[][] flippeddata;
 			if (layer.XYView) {
 				flippeddata = new char[data.Length][];
@@ -71,7 +69,7 @@ namespace teolib
 				flippeddata = data;
 			}
 
-			TextLayer nLayer = new TextLayer (layer.width, layer.height, layer.xyView);
+			TextLayer nLayer = new TextLayer (layer.Width, layer.Height, layer.xyView);
 			TextMap nMap = new TextMap (flippeddata);
 			nLayer.AppendMap (nMap);
 			return nLayer;
@@ -142,17 +140,13 @@ namespace teolib
 			return AppendMap (map, TextMapApplyMode.OverwriteAll);
 		}
 
-		public TextMap ToMap() {
-			return new TextMap (data);
-		}
-
 		public TextLayer MergeLayer(TextLayer other, bool isOtherTop) {
-			TextLayer clone = Clone ();
+			TextLayer clone = (TextLayer)Clone ();
 			if (isOtherTop)
-				clone.AppendMap (other.ToMap ());
+				clone.AppendMap (other);
 			else {
-				TextLayer result = other.Clone ();
-				result.AppendMap (clone.ToMap ());
+				TextLayer result = (TextLayer)(other.Clone ());
+				result.AppendMap (clone);
 				clone = result;
 			}
 			return clone;
@@ -172,17 +166,10 @@ namespace teolib
 			data [x] [y] = value;
 		}
 
-		object ICloneable.Clone() {
-			return internalClone();
-		}
-
-		public TextLayer Clone() {
-			return internalClone();
-		}
-
-		private TextLayer internalClone() {
-			TextLayer tl = new TextLayer (width, height);
-			tl.AppendMap (this.ToMap ());
+		protected override TextMap internalClone() {
+			TextLayer tl = new TextLayer (Width, Height);
+			TextMap tm = base.internalClone ();
+			tl.AppendMap (tm);
 			return tl;
 		}
 	}

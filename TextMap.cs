@@ -19,6 +19,8 @@
 using System;
 using System.Drawing;
 using System.Collections.Generic;
+using System.Collections;
+using System.Linq;
 using System.ComponentModel;
 
 namespace teolib
@@ -26,7 +28,7 @@ namespace teolib
 	/// <summary>
 	/// This represents a simple 2-dimensional block of text. They can be applied to a TextLayer.
 	/// </summary>
-	public class TextMap : Component, IEnumerable<char[]> {
+	public class TextMap : Component, IEnumerable<char[]>, ICloneable {
 		/// <summary>
 		/// Stores the data used in the text map
 		/// </summary>
@@ -59,6 +61,18 @@ namespace teolib
 		}
 
 		/// <summary>
+		/// Gets the eneumerator for the TextMap
+		/// </summary>
+		/// <returns>The enumerator.</returns>
+		public IEnumerator<char[]> GetEnumerator() {
+			return data.ToList ().GetEnumerator ();
+		}
+
+		IEnumerator IEnumerable.GetEnumerator() {
+			return ((data.ToList ()) as IEnumerable).GetEnumerator ();
+		}
+
+		/// <summary>
 		/// Gets the size of the TextMap
 		/// </summary>
 		/// <value>The size of the TextMap</value>
@@ -82,7 +96,7 @@ namespace teolib
 			
 		[Obsolete("Use Resize instead of this")]
 		public TextMap Clip(int width, int height) {
-			if (new Size (width, height) == size)
+			if (new Size (width, height) == Size)
 				return this;
 
 			return InternalClip (width, height);
@@ -90,7 +104,7 @@ namespace teolib
 
 		// used to clip stuff
 		private TextMap InternalClip(int width, int height) {
-			if (new Size (width, height) == size)
+			if (new Size (width, height) == Size)
 				return this;
 			
 			char[][] clippedMap = new char[width][];
@@ -148,6 +162,22 @@ namespace teolib
 			}
 
 			return new TextMap (expandedMap);
+		}
+
+		public TextMap Clone() {
+			return internalClone();
+		}
+
+		object ICloneable.Clone() {
+			return internalClone ();
+		}
+
+		protected virtual TextMap internalClone() {
+			TextMap tm = new TextMap (Width, Height);
+			for (int i = 0; i < Width; i++)
+				for (int j = 0; j < Height; j++)
+					tm.data [i] [j] = data [i] [j];
+			return tm;
 		}
 
 		/// <summary>

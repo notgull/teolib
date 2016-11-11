@@ -40,7 +40,6 @@
     <Compile Include="TextLayer.cs" />
     <Compile Include="TextLayerCollection.cs" />
     <Compile Include="OutputManager.cs" />
-    <Compile Include="Dialog.cs" />
     <Compile Include="Teolib.cs" />
   </ItemGroup>
   <ItemGroup>

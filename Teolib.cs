@@ -12,7 +12,7 @@ namespace teolib
 					cArr [i] [j] = ' ';
 			}
 
-			return height;
+			return cArr;
 		}
 	}
 }
