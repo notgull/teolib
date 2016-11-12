@@ -14,6 +14,14 @@ namespace teolib
 
 			return cArr;
 		}
+
+		private static OutputManager outputMan = null;
+
+		public static OutputManager GetOutputManager() {
+			if (outputMan == null)
+				outputMan = new OutputManager ();
+			return outputMan;
+		}
 	}
 }
 
