@@ -51,6 +51,9 @@ namespace teolib
 		}
 
 		public TextLayer MergeLayers() {
+			if (textLayer.Count == 0)
+				return null;
+
 			TextLayer curr = null;
 			foreach (TextLayer tl in this) {
 				if (curr == null) {

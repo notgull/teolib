@@ -22,8 +22,12 @@ using System.ComponentModel;
 
 namespace teolib
 {
+	/// <summary>
+	/// Manages the output of Teolib
+	/// </summary>
 	public sealed class OutputManager : Container, IDisposable
 	{
+		// variables
 		private TextLayerCollection collection;
 		private TextWriter output;
 		private int margin;
@@ -44,6 +48,13 @@ namespace teolib
 			Refresh ();
 		}
 
+		/// <summary>
+		/// Creates a layer and adds it to the output manager
+		/// </summary>
+		/// <returns>The layer, to be modified</returns>
+		/// <param name="width">Width.</param>
+		/// <param name="height">Height.</param>
+		/// <param name="xyView">If set to <c>true</c> xy view.</param>
 		public TextLayer MakeLayer(int width, int height, bool xyView) {
 			if (this.width != -1 && this.height != -1)
 				throw new ArgumentException ("Use the version with no parameters to add to already existing layers.", "width");
@@ -51,10 +62,19 @@ namespace teolib
 			return MakeLayerInternal (width, height, xyView);
 		}
 
+		/// <summary>
+		/// Creates a layer and adds it to the output manager
+		/// </summary>
+		/// <returns>The layer.</returns>
+		/// <param name="xyView">If set to <c>true</c> xy view.</param>
 		public TextLayer MakeLayer(bool xyView) {
 			return MakeLayerInternal (width, height, xyView);
 		}
 
+		/// <summary>
+		/// Creates a layer and adds it to the output manager
+		/// </summary>
+		/// <returns>The layer.</returns>
 		public TextLayer MakeLayer() {
 			return MakeLayer (true);
 		}
@@ -73,7 +93,19 @@ namespace teolib
 
 		internal OutputManager() : this(Console.Out) {}
 
-		public TextLayer MergedLayer { get { return this.collection.MergeLayers(); } }
+		/// <summary>
+		/// Gets the merged layer.
+		/// </summary>
+		/// <value>The merged layer.</value>
+		public TextLayer MergedLayer { get { 
+
+				TextLayer layer = this.collection.MergeLayers();
+				if (layer == null) {
+					layer = Teolib.GetEmptyLayer (width, height);
+					layer.XYView = false;
+				}
+				return layer;
+			} }
 
 		protected override void Dispose (bool disposing)
 		{
@@ -82,23 +114,32 @@ namespace teolib
 				output.Dispose ();
 		}
 
+		/// <summary>
+		/// Gets or sets the margin.
+		/// </summary>
+		/// <value>The margin.</value>
 		public int Margin {
 			get { return margin; }
 			set { margin = value; }
 		}
 
+		/// <summary>
+		/// Gets the layers.
+		/// </summary>
+		/// <value>The layers.</value>
 		public TextLayerCollection Layers {
 			get { return collection; }
 		}
 
+		/// <summary>
+		/// Refreshes the output, reprinting everything
+		/// </summary>
 		public void Refresh() {
 			for (int i = 0; i < margin; i++)
-				Console.WriteLine ();
-
-
+				output.WriteLine ();
 
 			foreach (char[] row in MergedLayer.Data) {
-				Console.WriteLine (new String (row));
+				output.WriteLine (new String (row));
 			}
 		}
 	}
