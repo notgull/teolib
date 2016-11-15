@@ -73,7 +73,7 @@ namespace teolib
 		/// <returns>The compiled layer.</returns>
 		/// <param name="layer">Layer to be cmpiled</param>
 		public static TextLayer CompileLayer(TextLayer layer) { 
-			char[][] data = layer.data;
+			char[][] data = layer.Data;
 			char[][] flippeddata;
 			if (layer.XYView) {
 				flippeddata = new char[data.Length][];
@@ -272,6 +272,41 @@ namespace teolib
 			tl.AppendMap (tm);
 			return tl;
 		}
+
+		/// <summary>
+		/// Creates a text layer made entirely from one character
+		/// </summary>
+		/// <param name="c">The character</param>
+		/// <param name="width">Width.</param>
+		/// <param name="height">Height.</param>
+		public static TextLayer OneRepeatedChar(char c, int width, int height) {
+			TextLayer tl = new TextLayer (width, height);
+			for (int i = 0; i < width; i++)
+				for (int j = 0; j < height; j++)
+					tl.ChangeLetterAt (i, j, c);
+			return tl;
+		}
+			
+		/*
+		public static TextLayer TiledMap(TextMap tm, int width, int height, int xTileStart, int yTileStart) {
+			if (xTileStart > width || yTileStart > height)
+				throw new ArgumentOutOfRangeException ("The tiling starting points cannot be outside the size!");
+
+			TextLayer tl = new TextLayer (width, height);
+			if (xTileStart != 0) {
+				int preTileWidth = xTileStart;
+				int remainingTileWidth = preTileWidth;
+				int requiredMaps = (int)Math.Floor ((double)(xTileStart / tm.Width));
+				double remainderOfMap = xTileStart % tm.Width;
+
+				for (int i = 0; i < requiredMaps; i++) {
+
+				}
+			}
+
+			return null;
+		}
+		*/
 	}
 }
 

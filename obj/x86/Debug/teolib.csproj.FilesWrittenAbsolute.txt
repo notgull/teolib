@@ -3,3 +3,8 @@
 /home/jtnunley/texbge/teolib/bin/Debug/teolib.dll
 /home/jtnunley/texbge/teolib/obj/x86/Debug/teolib.dll
 /home/jtnunley/texbge/teolib/obj/x86/Debug/teolib.dll.mdb
+/run/media/jtnunley/AWESOME/Personal/Computing/LostInTime/Code/teolib/obj/x86/Debug/.NETFramework,Version=v4.5.AssemblyAttribute.cs
+/run/media/jtnunley/AWESOME/Personal/Computing/LostInTime/Code/teolib/obj/x86/Debug/teolib.dll
+/run/media/jtnunley/AWESOME/Personal/Computing/LostInTime/Code/teolib/obj/x86/Debug/teolib.dll.mdb
+/run/media/jtnunley/AWESOME/Personal/Computing/LostInTime/Code/teolib/bin/Debug/teolib.dll.mdb
+/run/media/jtnunley/AWESOME/Personal/Computing/LostInTime/Code/teolib/bin/Debug/teolib.dll

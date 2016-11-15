@@ -1,9 +1,17 @@
 ﻿using System;
-
 namespace teolib
 {
+	/// <summary>
+	/// Helper class for Teolib functions
+	/// </summary>
 	public static class Teolib
 	{
+		/// <summary>
+		/// Retrieves an empty character array, made entirely out of spaces
+		/// </summary>
+		/// <returns>The empty char array.</returns>
+		/// <param name="width">Width.</param>
+		/// <param name="height">Height.</param>
 		public static char[][] GetEmptyCharArray(int width, int height) {
 			char[][] cArr = new char[width][];
 			for (int i = 0; i < width; i++) {
@@ -17,24 +25,46 @@ namespace teolib
 
 		private static OutputManager outputMan = null;
 
+		/// <summary>
+		/// Gets the output manager.
+		/// </summary>
+		/// <returns>The output manager.</returns>
 		public static OutputManager GetOutputManager() {
 			if (outputMan == null)
 				outputMan = new OutputManager ();
 			return outputMan;
 		}
 
-		public static OutputManager GetOutputManager(int width, int height) {
+		/// <summary>
+		/// Gets the output manager.
+		/// </summary>
+		/// <returns>The output manager.</returns>
+		/// <param name="width">Width.</param>
+		/// <param name="height">Height.</param>
+		public static OutputManager GetOutputManager(int height) {
 			if (outputMan == null)
-				outputMan = new OutputManager (width, height);
+				outputMan = new OutputManager (Console.Out, height);
 			else
 				throw new Exception ("The OutputManager has already been initialized!");
 			return outputMan;
 		}
 
+		/// <summary>
+		/// Gets an empty map, made entirely out of spaces
+		/// </summary>
+		/// <returns>The empty map.</returns>
+		/// <param name="width">Width.</param>
+		/// <param name="height">Height.</param>
 		public static TextMap GetEmptyMap(int width, int height) {
 			return new TextMap(width, height);
 		}
 
+		/// <summary>
+		/// Gets an empty layer, made entirely out of spaces
+		/// </summary>
+		/// <returns>The empty layer.</returns>
+		/// <param name="width">Width.</param>
+		/// <param name="height">Height.</param>
 		public static TextLayer GetEmptyLayer(int width, int height) {
 			return new TextLayer(width, height);
 		}

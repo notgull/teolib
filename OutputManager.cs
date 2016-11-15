@@ -107,6 +107,17 @@ namespace teolib
 				return layer;
 			} }
 
+		/// <summary>
+		/// Gets the width.
+		/// </summary>
+		/// <value>The width.</value>
+		public int Width { get { return this.width; } }
+		/// <summary>
+		/// Gets the height.
+		/// </summary>
+		/// <value>The height.</value>
+		public int Height { get { return this.height; } }
+
 		protected override void Dispose (bool disposing)
 		{
 			base.Dispose (disposing);

@@ -23,7 +23,13 @@ using System.ComponentModel;
 
 namespace teolib
 {
+	/// <summary>
+	/// Acts as a collection of TextLayers
+	/// </summary>
 	public class TextLayerCollection : Container, IList<TextLayer>, IComponent	{
+		/// <summary>
+		/// Creates a new TextLayerCollection
+		/// </summary>
 		public TextLayerCollection ()
 		{
 			textLayer = new List<TextLayer> ();
@@ -32,11 +38,20 @@ namespace teolib
 		private List<TextLayer> textLayer;
 
 		private ISite site;
+
+		/// <summary>
+		/// Gets or sets the site.
+		/// </summary>
+		/// <value>The site.</value>
 		public ISite Site {
 			get { return site; }
 			set { site = value; }
 		}
 
+		/// <summary>
+		/// Gets the components.
+		/// </summary>
+		/// <value>The components.</value>
 		public override ComponentCollection Components {
 			get {
 				List<Component> component = new List<Component> ();
@@ -46,10 +61,18 @@ namespace teolib
 			}
 		}
 
+		/// <summary>
+		/// Initializes a new instance of the TextLayerCollection class.
+		/// </summary>
+		/// <param name="layer">Layer to have</param>
 		public TextLayerCollection(IEnumerable<TextLayer> layer) : base() {
 			textLayer = new List<TextLayer> (layer);
 		}
 
+		/// <summary>
+		/// Merges the layers.
+		/// </summary>
+		/// <returns>The merged layer</returns>
 		public TextLayer MergeLayers() {
 			if (textLayer.Count == 0)
 				return null;
@@ -72,6 +95,10 @@ namespace teolib
 			base.Add (tl);
 		}
 
+		/// <summary>
+		/// Add the specified component.
+		/// </summary>
+		/// <param name="component">Component.</param>
 		public override void Add (IComponent component)
 		{
 			if (component is TextLayer)
@@ -79,6 +106,10 @@ namespace teolib
 			throw new InvalidCastException ("Could not cast component into TextLayer");
 		}
 
+		/// <summary>
+		/// Gets or sets the TextLayer at the specified index.
+		/// </summary>
+		/// <param name="index">Index.</param>
 		public TextLayer this [int index] {
 			get { return textLayer [index]; }
 			set { textLayer [index] = value; }
@@ -91,21 +122,36 @@ namespace teolib
 				OnDispose ();
 		}
 
-		//
-		// Methods
-		//
+		/// <summary>
+		/// Gets the index of the item
+		/// </summary>
+		/// <returns>The index</returns>
+		/// <param name="item">Item.</param>
 		public int IndexOf (TextLayer item) {
 			return textLayer.IndexOf (item);
 		}
 
+		/// <summary>
+		/// Insert the specified item at the index
+		/// </summary>
+		/// <param name="index">Index.</param>
+		/// <param name="item">Item.</param>
 		public void Insert (int index, TextLayer item) {
 			textLayer.Insert (index, item);
 		}
 
+		/// <summary>
+		/// Removes at index.
+		/// </summary>
+		/// <param name="index">Index.</param>
 		public void RemoveAt (int index) {
 			textLayer.RemoveAt (index);
 		}
 
+		/// <summary>
+		/// Gets the count.
+		/// </summary>
+		/// <value>The count.</value>
 		public int Count {
 			get { return textLayer.Count; }
 		}
@@ -114,21 +160,34 @@ namespace teolib
 			get { return false; }
 		}
 
-		//
-		// Methods
-		//
+
 		void ICollection<TextLayer>.Add (TextLayer item) { AddInternal(item); }
 
+		/// <summary>
+		/// Clear this instance.
+		/// </summary>
 		public void Clear () { textLayer.Clear(); }
 
+		/// <summary>
+		/// Contains the specified item.
+		/// </summary>
+		/// <param name="item">Item.</param>
 		public bool Contains (TextLayer item) { return this.textLayer.Contains(item); }
 
 		public void CopyTo (TextLayer[] array, int arrayIndex) {
 			textLayer.CopyTo (array, arrayIndex);
 		}
 
+		/// <summary>
+		/// Remove the specified item.
+		/// </summary>
+		/// <param name="item">Item.</param>
 		public bool Remove (TextLayer item) { return textLayer.Remove (item); }
 
+		/// <summary>
+		/// Gets the enumerator.
+		/// </summary>
+		/// <returns>The enumerator.</returns>
 		public IEnumerator<TextLayer> GetEnumerator() {
 			return textLayer.GetEnumerator ();
 		}
@@ -137,6 +196,9 @@ namespace teolib
 			return textLayer.GetEnumerator ();
 		}
 
+		/// <summary>
+		/// Occurs when disposed.
+		/// </summary>
 		public event EventHandler Disposed;
 
 		private void OnDispose() {
