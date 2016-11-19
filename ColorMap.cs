@@ -7,7 +7,7 @@ namespace teolib
 	/// <summary>
 	/// Represents areas of color in a TextLayer
 	/// </summary>
-	public class ColorMap : System.Collections.Generic.IEnumerable<Color[]>
+	public class ColorMap //: System.Collections.Generic.IEnumerable<Color[]>
 	{
 		private ConsoleColor[][] fdata;
 
@@ -30,7 +30,7 @@ namespace teolib
 		/// </summary>
 		/// <param name="fdata">Front color data.</param>
 		/// <param name="bdata">Back color data.</param>
-		public ColorMap (Color[][] fdata, Color[][] bdata)
+		public ColorMap (ConsoleColor[][] fdata, ConsoleColor[][] bdata)
 		{
 			this.fdata = fdata;
 			this.bdata = bdata;

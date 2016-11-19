@@ -25,7 +25,7 @@ namespace teolib
 	/// <summary>
 	/// Manages the output of Teolib
 	/// </summary>
-	public sealed class OutputManager : Container, IDisposable
+	public sealed class OutputManager : IDisposable
 	{
 		// variables
 		private TextLayerCollection collection;
@@ -44,7 +44,6 @@ namespace teolib
 			this.margin = margin;
 			this.height = margin;
 			this.width = Console.BufferWidth;
-			this.Add (collection);
 			Refresh ();
 		}
 
@@ -118,12 +117,17 @@ namespace teolib
 		/// <value>The height.</value>
 		public int Height { get { return this.height; } }
 
-		protected override void Dispose (bool disposing)
+		private void Dispose (bool disposing)
 		{
-			base.Dispose (disposing);
-			if (disposing)
+			if (disposing && output != Console.Out)
 				output.Dispose ();
 		}
+
+		public void Dispose () {
+			this.Dispose (true);
+		}
+
+		~OutputManager() { this.Dispose(false); }
 
 		/// <summary>
 		/// Gets or sets the margin.

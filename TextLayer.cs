@@ -316,44 +316,86 @@ namespace teolib
 		public static TextLayer Border(int width, int height) {
 			
 			TextLayer tm = new TextLayer (width, height);
-			tm.ChangeLetterAt (0, 0, "/");
-			tm.ChangeLetterAt (width, 0, "\\");
-			tm.ChangeLetterAt (0, height, "\\");
-			tm.ChangeLetterAt (width, height, "/");
+			tm.ChangeLetterAt (0, 0, '/');
+			tm.ChangeLetterAt (width, 0, '\\');
+			tm.ChangeLetterAt (0, height, '\\');
+			tm.ChangeLetterAt (width, height, '/');
 
 			for (int i = 1; i < width - 2; i++) {
-				tm.ChangeLetterAt (i, 0, "‾"); 
-				tm.ChangeLetterAt (i, height, "_");
+				tm.ChangeLetterAt (i, 0, '‾'); 
+				tm.ChangeLetterAt (i, height, '_');
 			}
 
 			for (int i = 0; i < height; i++) {
-				tm.ChangeLetterAt (0, i, "|");
-				tm.ChangeLetterAt (width, i, "|");
+				tm.ChangeLetterAt (0, i, '|');
+				tm.ChangeLetterAt (width, i, '|');
 			}
 
 			return tm;
 		}
 
-
+		/// <summary>
+		/// Dialog with the specified width, height, dialog and charsPerLine.
+		/// </summary>
+		/// <param name="width">Width.</param>
+		/// <param name="height">Height.</param>
+		/// <param name="dialog">Dialog.</param>
+		/// <param name="charsPerLine">Chars per line.</param>
 		public static TextLayer Dialog(int width, int height, string dialog, int charsPerLine) {
 			TextLayer tl = new TextLayer (width, height);
-			int middleOfLayerX = Math.Floor(((decimal)width / 2));
-			int middleOfLayerY = Math.Floor (((decimal)height / 2));
+			int middleOfLayerX = Teolib.DivideThenFloor (width, 2);
+			int middleOfLayerY = Teolib.DivideThenFloor (height, 2);
 
 			bool oddX = Teolib.IsNumberOdd (width);
 			bool oddY = Teolib.IsNumberOdd (height);
 
-			int requiredLines = Math.Ceiling (((decimal)(dialog.Length)) / charsPerLine);
-			int marginX = Math.Floor (((decimal)(width - charsPerLine)) / 2);
-			int marginY = Math.Floor (((decimal)(height - requiredLines)) / 2);
+			int requiredLines = Teolib.DivideThenCeil (dialog.Length, charsPerLine);//Math.Ceiling (((decimal)(dialog.Length)) / (decimal)charsPerLine);
+			int marginX =  Teolib.DivideThenFloor(width - charsPerLine, 2); //Math.Floor (((decimal)(width - charsPerLine)) / 2);
+			int marginY = Teolib.DivideThenFloor(height - requiredLines, 2);//Math.Floor (((decimal)(height - requiredLines)) / 2);
 
-
-
-			for (int i = marginY; i < marginY + requiredLines; i++) {
-				for (int j = marginX; j < marginX + charsPerLine; j++) {
-					
+			List<string> lines = new List<string> ();
+			string buffer = "";
+			int currentPosition = 0;
+			for (int i = 0; i < dialog.Length; i++) {
+				buffer += dialog [i];
+				currentPosition++;
+				if (currentPosition + 1 >= charsPerLine || i == (dialog.Length - 1)) {
+					lines.Add (buffer);
+					buffer = "";
+					currentPosition = 0;
 				}
 			}
+
+			currentPosition = 0;
+			for (int i = marginY; i < marginY + requiredLines; i++) {
+				string line = lines [currentPosition];
+				int start;
+				int limit;
+				if (line.Length > charsPerLine) {
+					int requiredMargin = charsPerLine - line.Length;
+					int marginLeft;
+					int marginRight;
+					if (Teolib.IsNumberOdd (requiredMargin)) {
+						marginLeft = Teolib.DivideThenFloor (requiredMargin, 2);
+						marginRight = Teolib.DivideThenCeil (requiredMargin, 2);
+					} else {
+						marginLeft = marginRight = requiredMargin / 2;
+					}
+					start = marginX + marginLeft;
+					limit = marginY - marginRight;
+				} else {
+					start = marginX;
+					limit = marginX + charsPerLine;
+				}
+				int k = 0;
+				for (int j = start; j < limit; j++) {
+					tl.ChangeLetterAt (j, i, line [k]);
+					k++;
+				}
+				currentPosition++;
+			}
+
+			return tl;
 		}
 	}
 }

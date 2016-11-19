@@ -26,7 +26,7 @@ namespace teolib
 	/// <summary>
 	/// Acts as a collection of TextLayers
 	/// </summary>
-	public class TextLayerCollection : Container, IList<TextLayer>, IComponent	{
+	public class TextLayerCollection : IList<TextLayer>	{
 		/// <summary>
 		/// Creates a new TextLayerCollection
 		/// </summary>
@@ -36,30 +36,6 @@ namespace teolib
 		}
 
 		private List<TextLayer> textLayer;
-
-		private ISite site;
-
-		/// <summary>
-		/// Gets or sets the site.
-		/// </summary>
-		/// <value>The site.</value>
-		public ISite Site {
-			get { return site; }
-			set { site = value; }
-		}
-
-		/// <summary>
-		/// Gets the components.
-		/// </summary>
-		/// <value>The components.</value>
-		public override ComponentCollection Components {
-			get {
-				List<Component> component = new List<Component> ();
-				foreach (TextLayer layer in this)
-					component.Add (layer);
-				return new ComponentCollection (component.ToArray ()); 
-			}
-		}
 
 		/// <summary>
 		/// Initializes a new instance of the TextLayerCollection class.
@@ -92,14 +68,13 @@ namespace teolib
 
 		private void AddInternal(TextLayer tl) {
 			textLayer.Add (tl);
-			base.Add (tl);
 		}
 
 		/// <summary>
 		/// Add the specified component.
 		/// </summary>
 		/// <param name="component">Component.</param>
-		public override void Add (IComponent component)
+		public void Add (TextLayer component)
 		{
 			if (component is TextLayer)
 				AddInternal (component as TextLayer);
@@ -115,12 +90,14 @@ namespace teolib
 			set { textLayer [index] = value; }
 		}
 
-		protected override void Dispose (bool disposing)
+		protected void Dispose (bool disposing)
 		{
-			base.Dispose (disposing);
 			if (disposing)
 				OnDispose ();
 		}
+
+		public void Dispose() { Dispose(true); }
+		~TextLayerCollection() { this.Dispose(false); }
 
 		/// <summary>
 		/// Gets the index of the item

@@ -28,7 +28,7 @@ namespace teolib
 	/// <summary>
 	/// This represents a simple 2-dimensional block of text. They can be applied to a TextLayer.
 	/// </summary>
-	public class TextMap : Component, IEnumerable<char[]>, ICloneable {
+	public class TextMap : IEnumerable<char[]>, ICloneable {
 		/// <summary>
 		/// Stores the data used in the text map
 		/// </summary>

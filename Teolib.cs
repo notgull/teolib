@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 namespace teolib
 {
 	/// <summary>
@@ -33,6 +34,34 @@ namespace teolib
 			if (outputMan == null)
 				outputMan = new OutputManager ();
 			return outputMan;
+		}
+
+		/// <summary>
+		/// Divides then floors.
+		/// </summary>
+		/// <returns>The floored quotient</returns>
+		/// <param name="dividend">Dividend.</param>
+		/// <param name="divisor">Divisor.</param>
+		public static int DivideThenFloor(int dividend, int divisor) {
+			decimal d1 = (dividend as IConvertible).ToDecimal (Thread.CurrentThread.CurrentCulture);
+			decimal d2 = (divisor as IConvertible).ToDecimal (Thread.CurrentThread.CurrentCulture);
+			decimal d3 = d1 / d2;
+			decimal d4 = Math.Floor (d3);
+			return (d4 as IConvertible).ToInt32 (Thread.CurrentThread.CurrentCulture);
+		}
+
+		/// <summary>
+		/// Dividess then ceils.
+		/// </summary>
+		/// <returns>The ceiled quotient</returns>
+		/// <param name="dividend">Dividend.</param>
+		/// <param name="divisor">Divisor.</param>
+		public static int DivideThenCeil(int dividend, int divisor) {
+			decimal d1 = (dividend as IConvertible).ToDecimal (Thread.CurrentThread.CurrentCulture);
+			decimal d2 = (divisor as IConvertible).ToDecimal (Thread.CurrentThread.CurrentCulture);
+			decimal d3 = d1 / d2;
+			decimal d4 = Math.Ceiling (d3);
+			return (d4 as IConvertible).ToInt32 (Thread.CurrentThread.CurrentCulture);
 		}
 
 		/// <summary>
