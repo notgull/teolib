@@ -43,6 +43,8 @@
     <Compile Include="TextLayerCollection.cs" />
     <Compile Include="OutputManager.cs" />
     <Compile Include="Teolib.cs" />
+    <Compile Include="Alignment.cs" />
+    <Compile Include="ColorMap.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

@@ -286,7 +286,7 @@ namespace teolib
 					tl.ChangeLetterAt (i, j, c);
 			return tl;
 		}
-			
+
 		/*
 		public static TextLayer TiledMap(TextMap tm, int width, int height, int xTileStart, int yTileStart) {
 			if (xTileStart > width || yTileStart > height)
@@ -307,6 +307,54 @@ namespace teolib
 			return null;
 		}
 		*/
+
+		/// <summary>
+		/// Border with specified width and height.
+		/// </summary>
+		/// <param name="width">Width.</param>
+		/// <param name="height">Height.</param>
+		public static TextLayer Border(int width, int height) {
+			
+			TextLayer tm = new TextLayer (width, height);
+			tm.ChangeLetterAt (0, 0, "/");
+			tm.ChangeLetterAt (width, 0, "\\");
+			tm.ChangeLetterAt (0, height, "\\");
+			tm.ChangeLetterAt (width, height, "/");
+
+			for (int i = 1; i < width - 2; i++) {
+				tm.ChangeLetterAt (i, 0, "‾"); 
+				tm.ChangeLetterAt (i, height, "_");
+			}
+
+			for (int i = 0; i < height; i++) {
+				tm.ChangeLetterAt (0, i, "|");
+				tm.ChangeLetterAt (width, i, "|");
+			}
+
+			return tm;
+		}
+
+
+		public static TextLayer Dialog(int width, int height, string dialog, int charsPerLine) {
+			TextLayer tl = new TextLayer (width, height);
+			int middleOfLayerX = Math.Floor(((decimal)width / 2));
+			int middleOfLayerY = Math.Floor (((decimal)height / 2));
+
+			bool oddX = Teolib.IsNumberOdd (width);
+			bool oddY = Teolib.IsNumberOdd (height);
+
+			int requiredLines = Math.Ceiling (((decimal)(dialog.Length)) / charsPerLine);
+			int marginX = Math.Floor (((decimal)(width - charsPerLine)) / 2);
+			int marginY = Math.Floor (((decimal)(height - requiredLines)) / 2);
+
+
+
+			for (int i = marginY; i < marginY + requiredLines; i++) {
+				for (int j = marginX; j < marginX + charsPerLine; j++) {
+					
+				}
+			}
+		}
 	}
 }
 

@@ -80,9 +80,9 @@ namespace teolib
 			TextLayer curr = null;
 			foreach (TextLayer tl in this) {
 				if (curr == null) {
-					curr = TextLayer.CompileLayer (tl);
+					curr = tl;
 				} else {
-					TextLayer nLayer = TextLayer.CompileLayer (tl);
+					TextLayer nLayer = tl;
 					nLayer.MergeLayer (curr);
 					curr = nLayer;
 				}

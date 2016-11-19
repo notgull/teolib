@@ -68,6 +68,18 @@ namespace teolib
 		public static TextLayer GetEmptyLayer(int width, int height) {
 			return new TextLayer(width, height);
 		}
+
+		/// <summary>
+		/// Determines if is number odd the specified i.
+		/// </summary>
+		/// <returns><c>true</c> if is number odd the specified i; otherwise, <c>false</c>.</returns>
+		/// <param name="i">The index.</param>
+		public static bool IsNumberOdd(int i) {
+			decimal d = ((decimal)i) / 2;
+			decimal f = Math.Floor (d);
+
+			return d != f;
+		}
 	}
 }
 
