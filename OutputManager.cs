@@ -48,6 +48,14 @@ namespace teolib
 		}
 
 		/// <summary>
+		/// Adds the layer.
+		/// </summary>
+		/// <param name="tl">Text layer.</param>
+		public void AddLayer(TextLayer tl) {
+			collection.Add (tl);
+		}
+
+		/// <summary>
 		/// Creates a layer and adds it to the output manager
 		/// </summary>
 		/// <returns>The layer, to be modified</returns>
@@ -82,7 +90,7 @@ namespace teolib
 			TextLayer layer = new TextLayer (width, height, xyView);
 			this.width = width;
 			this.height = height;
-			this.margin = margin;
+			this.margin = height;
 			collection.Add (layer);
 			//this.Add (layer);
 			return layer;
