@@ -53,8 +53,10 @@ namespace teolib
 		/// Determines whether or not the TextLayer is compiled or not
 		/// </summary>
 		/// <value><c>true</c> if XY view; otherwise, <c>false</c>.</value>
+		[Obsolete("XYView is now outdated")]
 		public bool XYView { get { return xyView; } set { xyView = value; } }
 
+		private List<ColorMap> colorMaps;
 
 		/// <summary>
 		/// Initializes a new instance of the TextLayer class.
@@ -62,7 +64,8 @@ namespace teolib
 		/// <param name="width">Width</param>
 		/// <param name="height">Height</param>
 		/// <param name="xyView">if the layer is autocompiled or not</param>
-		public TextLayer (int width, int height, bool xyView) : base(width, height)
+		[Obsolete("XYView is now outdated")]
+		public TextLayer (int width, int height, bool xyView) : this(width, height)
 		{
 			this.xyView = xyView;
 		}
@@ -72,6 +75,7 @@ namespace teolib
 		/// </summary>
 		/// <returns>The compiled layer.</returns>
 		/// <param name="layer">Layer to be cmpiled</param>
+		[Obsolete("XYView is now outdated")]
 		public static TextLayer CompileLayer(TextLayer layer) { 
 			char[][] data = layer.Data;
 			char[][] flippeddata;
@@ -103,8 +107,13 @@ namespace teolib
 		/// </summary>
 		/// <param name="width">Width.</param>
 		/// <param name="height">Height.</param>
-		public TextLayer(int width, int height) : this (width, height, true) { 
+		public TextLayer(int width, int height) : base(width, height) { 
+			colorMaps = new List<ColorMap> ();
+		}
 
+
+		public void AddColorMap(ColorMap colorMap) {
+			colorMaps.Add (colorMap);
 		}
 
 		/*public TextLayer (Size size) : this(size.Width, size.Height) {

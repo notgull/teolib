@@ -1,13 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Teolib.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="TextLayer.cs">
     <Files>
-      <File FileName="ColorMap.cs" Line="10" Column="73" />
+      <File FileName="ColorMap.cs" Line="1" Column="1" />
       <File FileName="Letter.cs" Line="1" Column="1" />
       <File FileName="OutputManager.cs" Line="1" Column="1" />
-      <File FileName="TextLayer.cs" Line="341" Column="36" />
+      <File FileName="TextLayer.cs" Line="111" Column="38" />
       <File FileName="TextMap.cs" Line="1" Column="1" />
-      <File FileName="Teolib.cs" Line="38" Column="61" />
+      <File FileName="Teolib.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
